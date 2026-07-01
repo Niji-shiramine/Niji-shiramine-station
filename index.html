@@ -1,0 +1,348 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .wrap { max-width: 680px; font-family: var(--font-sans); }
+  .header { background: #1a5276; }
+  .header-top { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-mark { width: 40px; height: 40px; background: #e74c3c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+  .logo-text { color: #fff; }
+  .logo-text .company { font-size: 10px; opacity: 0.8; }
+  .logo-text .line { font-size: 16px; font-weight: 500; }
+  .header-nav { display: flex; gap: 16px; }
+  .header-nav a { color: rgba(255,255,255,0.85); font-size: 12px; text-decoration: none; }
+  .station-bar { background: #154360; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .station-name .ja { font-size: 28px; font-weight: 700; color: #fff; }
+  .station-name .en { font-size: 13px; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; }
+  .station-meta { display: flex; gap: 8px; }
+  .badge { padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 500; }
+  .badge-t { background: #e74c3c; color: #fff; }
+  .badge-k { background: #2980b9; color: #fff; }
+  .navtab { background: #2471a3; display: flex; overflow-x: auto; }
+  .navtab button { padding: 9px 16px; color: rgba(255,255,255,0.75); font-size: 12px; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; }
+  .navtab button.active { color: #fff; border-bottom-color: #f39c12; }
+  .alert { background: #fef9e7; border-left: 4px solid #f39c12; padding: 8px 14px; display: flex; align-items: center; gap: 8px; }
+  .alert i { color: #e67e22; font-size: 16px; flex-shrink: 0; }
+  .alert-text { font-size: 12px; color: #7d6608; }
+  .alert-text strong { color: #6e2f00; }
+  .main { padding: 14px 12px; display: flex; flex-direction: column; gap: 14px; }
+  .section-title { font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .section-title i { font-size: 14px; }
+  .kaisatsu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .kaisatsu-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .kc-head { padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 0.5px solid var(--border); }
+  .kc-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .kc-status { display: flex; align-items: center; gap: 5px; }
+  .kc-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+  .kc-row { display: flex; align-items: center; justify-content: space-between; }
+  .kc-label { font-size: 11px; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; }
+  .kc-label i { font-size: 12px; }
+  .kc-val { font-size: 11px; color: var(--text-primary); }
+  .kc-gates { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+  .gate-chip { padding: 2px 8px; border-radius: 8px; font-size: 10px; font-weight: 500; }
+  .gate-ic { background: #eaf4fb; color: #1a5276; }
+  .gate-ticket { background: #eafaf1; color: #1a5276; }
+  .gate-wide { background: #fef9e7; color: #7d6608; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+  .dot-open { background: #27ae60; }
+  .timetable { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .tt-header { background: #1a5276; padding: 7px 14px; display: flex; justify-content: space-between; align-items: center; }
+  .tt-header-left { color: #fff; font-size: 12px; font-weight: 500; }
+  .tt-header-right { color: rgba(255,255,255,0.7); font-size: 11px; }
+  .tt-row { display: grid; grid-template-columns: 60px 1fr 80px 70px; padding: 8px 14px; align-items: center; border-bottom: 0.5px solid var(--border); gap: 8px; }
+  .tt-row:last-child { border-bottom: none; }
+  .tt-row.next { background: #eaf4fb; }
+  .tt-time { font-size: 20px; font-weight: 700; color: var(--text-primary); font-family: var(--font-mono); }
+  .tt-row.next .tt-time { color: #1a5276; }
+  .now-label { font-size: 10px; color: #e74c3c; font-weight: 500; display: block; }
+  .tt-dest { font-size: 13px; color: var(--text-primary); }
+  .tt-dest small { display: block; font-size: 10px; color: var(--text-secondary); margin-top: 1px; }
+  .tt-type { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 500; text-align: center; }
+  .type-t { background: #e74c3c; color: #fff; }
+  .type-k { background: #2980b9; color: #fff; }
+  .type-f { background: #27ae60; color: #fff; }
+  .tt-track { font-size: 12px; color: var(--text-secondary); text-align: center; }
+  .tt-track strong { font-size: 15px; color: var(--text-primary); display: block; }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .info-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 10px; padding: 12px; }
+  .info-card-head { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+  .info-card-head i { font-size: 18px; color: #1a5276; }
+  .info-card-head span { font-size: 12px; font-weight: 500; color: var(--text-primary); }
+  .info-item { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .info-item i { font-size: 13px; color: var(--text-secondary); width: 16px; }
+  .info-item span { font-size: 12px; color: var(--text-secondary); }
+  .avail { display: flex; align-items: center; gap: 4px; margin-bottom: 5px; }
+  .avail .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.ok { background: #27ae60; }
+  .dot.busy { background: #e67e22; }
+  .dot.ng { background: #e74c3c; }
+
+  /* メガフッター */
+  .mega-footer { background: #154360; padding: 24px 20px 0; }
+  .mf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .mf-section { padding: 0 16px 20px; border-right: 1px solid rgba(255,255,255,0.1); }
+  .mf-section:nth-child(even) { border-right: none; }
+  .mf-section-title { display: flex; align-items: center; gap: 6px; color: #fff; font-size: 13px; font-weight: 500; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 10px; cursor: pointer; }
+  .mf-section-title i { font-size: 14px; color: #f39c12; }
+  .mf-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+  .mf-cols.single { grid-template-columns: 1fr; }
+  .mf-group { margin-bottom: 10px; }
+  .mf-group-label { font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 4px; margin-bottom: 5px; }
+  .mf-group-label::before { content: '—'; margin-right: 2px; }
+  .mf-link { display: flex; align-items: center; gap: 4px; font-size: 11px; color: rgba(255,255,255,0.75); text-decoration: none; padding: 2px 0; line-height: 1.4; }
+  .mf-link:hover { color: #fff; }
+  .mf-link i { font-size: 10px; color: rgba(255,255,255,0.4); flex-shrink: 0; }
+  .mf-link .ext { font-size: 9px; color: rgba(255,255,255,0.35); }
+
+  /* フッターボトム */
+  .footer-bottom { background: #0e2e40; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; }
+  .footer-bottom span { font-size: 10px; color: rgba(255,255,255,0.4); }
+  .footer-bottom-links { display: flex; gap: 12px; }
+  .footer-bottom a { font-size: 10px; color: rgba(255,255,255,0.5); text-decoration: none; }
+</style>
+
+<div class="wrap">
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-mark">SR</div>
+        <div class="logo-text">
+          <div class="company">サクラ鉄道株式会社</div>
+          <div class="line">桜川本線</div>
+        </div>
+      </div>
+      <nav class="header-nav">
+        <a href="#">時刻表</a>
+        <a href="#">路線図</a>
+        <a href="#">運行情報</a>
+        <a href="#">お問い合わせ</a>
+      </nav>
+    </div>
+    <div class="station-bar">
+      <div class="station-name">
+        <div class="ja">桜川駅</div>
+        <div class="en">Sakuragawa Sta.</div>
+      </div>
+      <div class="station-meta">
+        <span class="badge badge-t">特急停車</span>
+        <span class="badge badge-k">快速停車</span>
+      </div>
+    </div>
+    <div class="navtab">
+      <button class="active">発着案内</button>
+      <button>時刻表</button>
+      <button>路線図</button>
+      <button>バリアフリー</button>
+      <button>駅周辺</button>
+      <button>定期券</button>
+      <button>忘れ物</button>
+    </div>
+  </div>
+
+  <div class="alert">
+    <i class="ti ti-alert-triangle" aria-hidden="true"></i>
+    <div class="alert-text">
+      <strong>【遅延情報】</strong> 桜川本線・上り方面：強風の影響により約10分の遅れが生じています。
+    </div>
+  </div>
+
+  <div class="main">
+    <div>
+      <div class="section-title"><i class="ti ti-door-enter" aria-hidden="true"></i>改札口案内</div>
+      <div class="kaisatsu-grid">
+        <div class="kaisatsu-card">
+          <div class="kc-head">
+            <div class="kc-name">北東口改札</div>
+            <div class="kc-status"><div class="dot dot-open"></div><span style="color:#1e8449;font-size:11px">営業中</span></div>
+          </div>
+          <div class="kc-body">
+            <div class="kc-row"><div class="kc-label"><i class="ti ti-clock" aria-hidden="true"></i>営業時間</div><div class="kc-val">5:30 – 24:00</div></div>
+            <div class="kc-row"><div class="kc-label"><i class="ti ti-door" aria-hidden="true"></i>コンコース数</div><div class="kc-val">6通路</div></div>
+            <div class="kc-gates"><span class="gate-chip gate-ic">IC</span><span class="gate-chip gate-ticket">磁気券</span><span class="gate-chip gate-wide">幅広改札</span></div>
+          </div>
+        </div>
+        <div class="kaisatsu-card">
+          <div class="kc-head">
+            <div class="kc-name">西南口改札</div>
+            <div class="kc-status"><div class="dot dot-open"></div><span style="color:#1e8449;font-size:11px">営業中</span></div>
+          </div>
+          <div class="kc-body">
+            <div class="kc-row"><div class="kc-label"><i class="ti ti-clock" aria-hidden="true"></i>営業時間</div><div class="kc-val">6:00 – 23:30</div></div>
+            <div class="kc-row"><div class="kc-label"><i class="ti ti-door" aria-hidden="true"></i>コンコース数</div><div class="kc-val">4通路</div></div>
+            <div class="kc-gates"><span class="gate-chip gate-ic">IC</span><span class="gate-chip gate-ticket">磁気券</span><span class="gate-chip gate-wide">幅広改札</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title"><i class="ti ti-train" aria-hidden="true"></i>次発・発着案内 ／ 上り方面</div>
+      <div class="timetable">
+        <div class="tt-header">
+          <div class="tt-header-left"><i class="ti ti-arrow-up" aria-hidden="true" style="font-size:12px;margin-right:4px"></i>上り — 大桜方面</div>
+          <div class="tt-header-right" id="clock">--:--</div>
+        </div>
+        <div class="tt-row next">
+          <div class="tt-time"><span class="now-label">次発</span>14:32</div>
+          <div class="tt-dest">大桜<small>終点</small></div>
+          <div class="tt-type type-t">特急</div>
+          <div class="tt-track">のりば<strong>1</strong></div>
+        </div>
+        <div class="tt-row">
+          <div class="tt-time">14:47</div>
+          <div class="tt-dest">新緑ヶ丘<small>新緑ヶ丘行き</small></div>
+          <div class="tt-type type-k">快速</div>
+          <div class="tt-track">のりば<strong>2</strong></div>
+        </div>
+        <div class="tt-row">
+          <div class="tt-time">15:03</div>
+          <div class="tt-dest">大桜<small>終点</small></div>
+          <div class="tt-type type-f">各停</div>
+          <div class="tt-track">のりば<strong>1</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-title"><i class="ti ti-building" aria-hidden="true"></i>駅構内情報</div>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-head"><i class="ti ti-accessible" aria-hidden="true"></i><span>バリアフリー</span></div>
+          <div class="info-item"><i class="ti ti-check" aria-hidden="true"></i><span>エレベーター：全ホーム対応</span></div>
+          <div class="info-item"><i class="ti ti-check" aria-hidden="true"></i><span>多目的トイレ：改札内外</span></div>
+          <div class="info-item"><i class="ti ti-check" aria-hidden="true"></i><span>点字ブロック設置済み</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-head"><i class="ti ti-parking" aria-hidden="true"></i><span>駐輪・駐車場</span></div>
+          <div class="avail"><div class="dot ok"></div><span style="font-size:12px;color:var(--text-secondary)">駐輪場　空きあり</span></div>
+          <div class="avail"><div class="dot busy"></div><span style="font-size:12px;color:var(--text-secondary)">駐車場　残りわずか</span></div>
+          <div class="avail"><div class="dot ng"></div><span style="font-size:12px;color:var(--text-secondary)">バイク駐輪　満車</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-head"><i class="ti ti-coin" aria-hidden="true"></i><span>ATM・コインロッカー</span></div>
+          <div class="info-item"><i class="ti ti-check" aria-hidden="true"></i><span>ATM（改札外）：平日9–18時</span></div>
+          <div class="info-item"><i class="ti ti-check" aria-hidden="true"></i><span>コインロッカー：1番出口付近</span></div>
+          <div class="info-item"><i class="ti ti-check" aria-hidden="true"></i><span>ICカード対応ロッカーあり</span></div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-head"><i class="ti ti-info-circle" aria-hidden="true"></i><span>窓口・問い合わせ</span></div>
+          <div class="info-item"><i class="ti ti-clock" aria-hidden="true"></i><span>みどりの窓口：5:30–22:00</span></div>
+          <div class="info-item"><i class="ti ti-phone" aria-hidden="true"></i><span>042-000-XXXX</span></div>
+          <div class="info-item"><i class="ti ti-mail" aria-hidden="true"></i><span>お問い合わせフォームあり</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- メガフッター -->
+  <div class="mega-footer">
+    <div class="mf-grid">
+
+      <!-- 鉄道・きっぷ -->
+      <div class="mf-section">
+        <div class="mf-section-title"><i class="ti ti-ticket" aria-hidden="true"></i>鉄道・きっぷ</div>
+        <div class="mf-cols">
+          <div>
+            <div class="mf-group">
+              <div class="mf-group-label">きっぷの予約・購入</div>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>おトクなきっぷ</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>えきねっと <span class="ext">↗</span></a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>新幹線eチケット <span class="ext">↗</span></a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>指定席券売機</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>JR東日本団体乗車券 WEB受付サービス</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>JR東日本遠足チケット</a>
+            </div>
+            <div class="mf-group">
+              <div class="mf-group-label">列車のご紹介</div>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>時刻表 <span class="ext">↗</span></a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>臨時列車</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>運行情報・運休情報 <span class="ext">↗</span></a>
+            </div>
+          </div>
+          <div>
+            <div class="mf-group">
+              <div class="mf-group-label">変更・払い戻し・紛失</div>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>きっぷについてお困りの方へ</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>よくいただくご質問 <span class="ext">↗</span></a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>えきねっとの変更・払い戻し <span class="ext">↗</span></a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>きっぷのルール・ご利用方法</a>
+            </div>
+            <div class="mf-group">
+              <div class="mf-group-label">定期券の購入</div>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>モバイルSuica</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>Apple PayのSuica</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>券売機での定期券の購入方法</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- おでかけ -->
+      <div class="mf-section">
+        <div class="mf-section-title"><i class="ti ti-map-pin" aria-hidden="true"></i>おでかけ</div>
+        <div class="mf-cols">
+          <div>
+            <div class="mf-group">
+              <div class="mf-group-label">エリアから旅を探す</div>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>東北・道南エリア</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>関東・伊豆エリア</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>信越・北陸エリア</a>
+            </div>
+            <div class="mf-group">
+              <div class="mf-group-label">旅を予約する</div>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>列車を予約する</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>ツアー・体験を予約する</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>ホテル・宿を予約する</a>
+            </div>
+            <div class="mf-group">
+              <div class="mf-group-label">旅の情報メディア</div>
+            </div>
+          </div>
+          <div>
+            <div class="mf-group">
+              <div class="mf-group-label">目的から旅を探す</div>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>おトクなきっぷでおでかけ</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>列車でおでかけ</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>グルメでおでかけ</a>
+              <a class="mf-link" href="#"><i class="ti ti-chevron-right" aria-hidden="true"></i>温泉でおでかけ</a>
+            </div>
+            <div class="mf-group">
+              <div class="mf-group-label">イベント・キャンペーン</div>
+            </div>
+            <div class="mf-group">
+              <div class="mf-group-label">旅のお役立ちサービス</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© サクラ鉄道株式会社</span>
+    <div class="footer-bottom-links">
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">サイトマップ</a>
+      <a href="#">アクセシビリティ</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const el = document.getElementById('clock');
+  if (el) el.textContent = h + ':' + m + ' 現在';
+}
+updateClock();
+setInterval(updateClock, 30000);
+document.querySelectorAll('.navtab button').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.navtab button').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
