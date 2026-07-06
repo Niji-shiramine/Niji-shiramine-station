@@ -1,0 +1,136 @@
+<!-- pages/departure.html -->
+<div style="display:flex; flex-direction:column; gap:14px;">
+
+  <!-- 改札 -->
+  <section>
+    <p class="sec-title"><i class="ti ti-door-enter"></i>改札口案内</p>
+    <div class="kaisatsu-grid">
+      <div class="card">
+        <div class="kc-head">
+          <span class="kc-name">北東口改札</span>
+          <span class="kc-status"><span class="dot dot-open"></span><span style="color:#1e8449">営業中</span></span>
+        </div>
+        <div class="kc-body">
+          <div class="kc-row">
+            <span class="kc-label"><i class="ti ti-clock"></i>営業時間</span>
+            <span class="kc-val">5:30 – 24:00</span>
+          </div>
+          <div class="kc-row">
+            <span class="kc-label"><i class="ti ti-door"></i>コンコース数</span>
+            <span class="kc-val">6通路</span>
+          </div>
+          <div class="kc-chips">
+            <span class="chip chip-ic">IC</span>
+            <span class="chip chip-ticket">磁気券</span>
+            <span class="chip chip-wide">幅広改札</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="kc-head">
+          <span class="kc-name">西南口改札</span>
+          <span class="kc-status"><span class="dot dot-open"></span><span style="color:#1e8449">営業中</span></span>
+        </div>
+        <div class="kc-body">
+          <div class="kc-row">
+            <span class="kc-label"><i class="ti ti-clock"></i>営業時間</span>
+            <span class="kc-val">6:00 – 23:30</span>
+          </div>
+          <div class="kc-row">
+            <span class="kc-label"><i class="ti ti-door"></i>コンコース数</span>
+            <span class="kc-val">4通路</span>
+          </div>
+          <div class="kc-chips">
+            <span class="chip chip-ic">IC</span>
+            <span class="chip chip-ticket">磁気券</span>
+            <span class="chip chip-wide">幅広改札</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 上り -->
+  <section>
+    <p class="sec-title"><i class="ti ti-train"></i>次発・発着案内 ／ 上り方面</p>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-l"><i class="ti ti-arrow-up" style="font-size:11px;margin-right:4px"></i>上り — 大桜方面</span>
+        <span class="card-head-r" id="live-clock">--:--</span>
+      </div>
+      <div class="tt-row next">
+        <div class="tt-time"><span class="now-label">次発</span>14:32</div>
+        <div class="tt-dest">大桜<small>終点</small></div>
+        <div class="tt-type type-t">特急</div>
+        <div class="tt-track">のりば<strong>1</strong></div>
+      </div>
+      <div class="tt-row">
+        <div class="tt-time">14:47</div>
+        <div class="tt-dest">新緑ヶ丘<small>新緑ヶ丘行き</small></div>
+        <div class="tt-type type-k">快速</div>
+        <div class="tt-track">のりば<strong>2</strong></div>
+      </div>
+      <div class="tt-row">
+        <div class="tt-time">15:03</div>
+        <div class="tt-dest">大桜<small>終点</small></div>
+        <div class="tt-type type-f">各停</div>
+        <div class="tt-track">のりば<strong>1</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 下り -->
+  <section>
+    <p class="sec-title"><i class="ti ti-train"></i>下り方面</p>
+    <div class="card">
+      <div class="card-head">
+        <span class="card-head-l"><i class="ti ti-arrow-down" style="font-size:11px;margin-right:4px"></i>下り — 花坂方面</span>
+        <span class="card-head-r">本日</span>
+      </div>
+      <div class="tt-row next">
+        <div class="tt-time"><span class="now-label">次発</span>14:38</div>
+        <div class="tt-dest">花坂<small>終点</small></div>
+        <div class="tt-type type-k">快速</div>
+        <div class="tt-track">のりば<strong>3</strong></div>
+      </div>
+      <div class="tt-row">
+        <div class="tt-time">14:55</div>
+        <div class="tt-dest">花坂<small>終点</small></div>
+        <div class="tt-type type-f">各停</div>
+        <div class="tt-track">のりば<strong>4</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 構内情報 -->
+  <section>
+    <p class="sec-title"><i class="ti ti-building"></i>駅構内情報</p>
+    <div class="info-grid">
+      <div class="card info-card">
+        <div class="info-card-head"><i class="ti ti-accessible"></i><span>バリアフリー</span></div>
+        <div class="info-item"><i class="ti ti-check"></i>エレベーター：全ホーム対応</div>
+        <div class="info-item"><i class="ti ti-check"></i>多目的トイレ：改札内外</div>
+        <div class="info-item"><i class="ti ti-check"></i>点字ブロック設置済み</div>
+      </div>
+      <div class="card info-card">
+        <div class="info-card-head"><i class="ti ti-parking"></i><span>駐輪・駐車場</span></div>
+        <div class="avail"><span class="dot dot-ok"></span>駐輪場　空きあり</div>
+        <div class="avail"><span class="dot dot-busy"></span>駐車場　残りわずか</div>
+        <div class="avail"><span class="dot dot-ng"></span>バイク駐輪　満車</div>
+      </div>
+      <div class="card info-card">
+        <div class="info-card-head"><i class="ti ti-coin"></i><span>ATM・コインロッカー</span></div>
+        <div class="info-item"><i class="ti ti-check"></i>ATM（改札外）：平日9–18時</div>
+        <div class="info-item"><i class="ti ti-check"></i>コインロッカー：1番出口付近</div>
+        <div class="info-item"><i class="ti ti-check"></i>ICカード対応ロッカーあり</div>
+      </div>
+      <div class="card info-card">
+        <div class="info-card-head"><i class="ti ti-info-circle"></i><span>窓口・問い合わせ</span></div>
+        <div class="info-item"><i class="ti ti-clock"></i>みどりの窓口：5:30–22:00</div>
+        <div class="info-item"><i class="ti ti-phone"></i>042-000-XXXX</div>
+        <div class="info-item"><i class="ti ti-mail"></i>お問い合わせフォームあり</div>
+      </div>
+    </div>
+  </section>
+
+</div>
